@@ -1,11 +1,12 @@
 "use client";
 
+import { ArrowUp } from "lucide-react";
 import { Button } from "../ui/button";
 import TextareaAutosize from "react-textarea-autosize";
 
 const FormUi = () => {
   return (
-    <div className="pb-7 bg-background">
+    <div className="pb-10 bg-background">
       <div className="max-w-2xl mx-auto w-full">
         <form className="w-full">
           <div className="flex items-end relative w-full mt-2 rounded-lg border border-border gap-2 sm:-ml-2 bg-foreground/5">
@@ -19,7 +20,7 @@ const FormUi = () => {
               type="submit"
               className="rounded-full absolute right-3 bottom-2 h-10 px-4"
             >
-              Search
+             <ArrowUp/>
             </Button>
           </div>
         </form>

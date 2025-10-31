@@ -1,0 +1,51 @@
+import { and, desc, eq } from "drizzle-orm"
+import { db } from "../drizzle"
+import { conversation } from "../schema"
+
+// createing conversation
+export const createCOnversation=async(user_id:string, title?:string)=>{
+     
+    const [result]=await db.insert(conversation).values({
+        title:title || "New converation",
+        userId:user_id
+    })
+    .returning()
+
+    return result.id
+}
+
+
+// geing user conversations
+export const getUserConversations=async(user_id:string)=>{
+    return await db.select()
+    .from(conversation)
+    .where(eq(conversation.userId,user_id))
+    .orderBy(desc(conversation.createdAt))
+}
+
+//get spacific conversation by id
+
+export const getCOnversationById=async({conver_id, user_id}:{conver_id:string, user_id:string})=>{
+  const result=await db.select()
+  .from(conversation)
+  .where(and(eq(conversation.id,conver_id), eq(conversation.userId, user_id))) 
+  
+  const conve=result[0]
+  if(!conve ||conve.userId !== user_id)return null
+
+  return conve
+}
+
+
+
+// delete conversation
+export const deleteCOnversation=async({conver_id, user_id}:{conver_id:string, user_id:string})=>{
+   const result=await db.delete(conversation)
+   .where(and(eq(conversation.id, conver_id), eq(conversation.userId, user_id)))
+   .returning()
+
+
+   if(result.length ===0)return null
+
+   return true
+}

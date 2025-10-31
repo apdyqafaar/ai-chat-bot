@@ -1,4 +1,5 @@
-import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+
+import { pgTable, text, timestamp, boolean, uuid } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -60,4 +61,51 @@ export const verification = pgTable("verification", {
     .notNull(),
 });
 
-export const schema = { user, account, session, verification };
+
+
+
+// 🗨️ Conversation Table
+export const conversation = pgTable("conversation", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  title: text("title").notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
+
+// 💬 Message Table
+export const message = pgTable("message", {
+  id: text("id").primaryKey(),
+  content: text("content"), // optional text content
+  imageUrl: text("image_url"), // optional image content
+  role: text("role").notNull(), // 'user' | 'assistant'
+  conversationId: text("conversation_id")
+    .notNull()
+    .references(() => conversation.id, { onDelete: "cascade" }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
+
+
+// 🧩 Export the schema
+export const schema = {
+  user,
+  account,
+  session,
+  verification,
+  conversation,
+  message,
+};
+
