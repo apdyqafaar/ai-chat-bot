@@ -1,9 +1,10 @@
 // import {UIMessage} from "ai"
-import { db } from "../drizzle"
-import { conversation, message } from "../schema"
+
+import { db } from "@/db/drizzle";
+import { conversation, message } from "@/db/schema";
 import { asc, eq } from "drizzle-orm"
 
-type UIMessage = {
+export type UIMessage = {
   id: string;
   role: "user" | "assistant";
   parts: { type: "text" | "image"; text?: string; imageUrl?: string }[];
@@ -26,14 +27,15 @@ export const saveChat=async({conver_id, messages}:{conver_id:string, messages:UI
 
     const exisitingMessages=await db.select()
     .from(message)
-    .where(eq(message.id, conver_id))
+    .where(eq(message.conversationId, conver_id))
 
+// collecting thier ids to filter latter
+    const exisitingMessagesIds=new Set(exisitingMessages.map((m)=> m.id))
 
-    const exisitingMessagesIds=exisitingMessages.map((m)=> m.id)
     // filtering to get the new messages and remove old ones which are in the database
-    const newMessages= messages.filter((m)=> !exisitingMessagesIds.includes(m.id))
+    const newMessages= messages.filter((m)=> !exisitingMessagesIds.has(m.id))
     
-
+ 
 
 
     if(newMessages.length>0){
@@ -60,6 +62,7 @@ export const saveChat=async({conver_id, messages}:{conver_id:string, messages:UI
 
         await db.update(conversation)
         .set({updatedAt:new Date()})
+        .where(eq(conversation.id, conver_id))
     }
 }
 
@@ -94,7 +97,8 @@ export async function loadMessages(conversationId: string): Promise<UIMessage[]>
     .from(message)
     .where(eq(message.conversationId, conversationId))
     .orderBy(asc(message.createdAt));
-
+    
+// preparing for the ui 
   return messages.map((m) => {
     const parts = [];
 

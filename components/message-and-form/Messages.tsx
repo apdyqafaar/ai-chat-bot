@@ -1,11 +1,89 @@
-"use server"
-const Messages = () => {
+"use client"
+
+import { UIMessage } from "@/lib/chat";
+import StartConversation from "./startConversation";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { SessionWithUser } from "@/types/session";
+import { Bot, User } from "lucide-react";
+import { Streamdown } from "streamdown";
+import { useEffect, useRef } from "react";
+
+
+interface MessagesProps {
+  messages: UIMessage[];
+  session:SessionWithUser,
+   status:"streaming" |"error" | "ready" |"submitted",
+}
+
+
+
+const Messages = ({ messages, session, status }: MessagesProps) => {
+
+const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, status]);
+
   return (
    
-        <div className=" min-h-full max-w-2xl mx-auto w-full  ">
-     Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit in fuga consectetur exercitationem autem nobis doloremque voluptates quaerat id magni, quam quod, quidem nostrum. Magnam blanditiis maxime corporis possimus saepe ab commodi, totam placeat eveniet inventore illo tenetur alias accusantium quas quisquam ad at dolores enim quod laudantium ea ipsam? Consectetur omnis officiis minus quia, cumque exercitationem qui accusantium ex illum deserunt maxime quod hic officia eaque minima pariatur odio incidunt commodi assumenda laboriosam mollitia beatae aspernatur vero. Ea cum recusandae ab eum, laborum est, rem totam, eveniet atque corporis cupiditate dolor optio in natus facilis minus? Sunt ab quibusdam maiores quam quasi reprehenderit quos rerum harum, tempora fugiat blanditiis cum placeat voluptatem consequuntur temporibus ipsum id itaque accusamus, iusto error labore nostrum, ullam sit! Modi dicta vitae, animi quam sint iure suscipit quasi cumque mollitia sapiente sed voluptatum eveniet doloremque deserunt asperiores non rerum. Beatae error repudiandae ad vel neque fugiat voluptatum ducimus pariatur. Ipsum natus quaerat sint quam temporibus voluptate blanditiis praesentium debitis itaque amet autem ab officiis, est ducimus eaque necessitatibus, distinctio pariatur. Dolor numquam nam tenetur minus provident optio consectetur, nostrum, maxime incidunt, eligendi ut reprehenderit vel mollitia et. Maxime itaque adipisci atque delectus rem soluta, in repellendus dignissimos error, dolorem dolores rerum quod est, deleniti fugiat debitis perferendis? Hic, quo corporis? Commodi deleniti officiis velit cumque natus aliquam numquam quia iusto, molestiae eaque tenetur iste ut repudiandae dignissimos libero totam perspiciatis porro? Sapiente, dolor! Omnis accusantium, facere ex rerum tempora excepturi eveniet cum natus modi rem doloribus, ipsa maiores laborum enim quo obcaecati libero autem quibusdam nam neque. Odit porro sint pariatur architecto harum. Aperiam, impedit ratione doloremque voluptate ex, vero sequi quia modi obcaecati officiis illo dolorum praesentium eveniet odio autem quos fuga? Aspernatur nemo doloribus provident nobis. Repellat in, iste ex porro eius dolor cum placeat consequatur ullam ea debitis harum ipsam vero distinctio facere aliquam praesentium maxime rem consectetur sunt deleniti! Excepturi ratione nihil nisi? Eum fugiat incidunt dolorem veritatis harum labore consectetur asperiores odio suscipit in possimus, quos, vitae nihil, libero adipisci ipsam provident? Incidunt eaque sunt vitae maiores obcaecati accusantium quisquam nisi nesciunt laborum ex molestias molestiae quae, autem repellat? Itaque distinctio temporibus, eos dolorum delectus cupiditate molestiae vero ut enim earum aspernatur atque exercitationem tempore blanditiis, laudantium unde eaque nam, harum architecto quibusdam. Esse pariatur minima nulla? Iste, iure voluptas consequuntur modi ab ullam praesentium explicabo id possimus officia labore, fugit incidunt mollitia sint distinctio necessitatibus alias. Repellat unde in error explicabo, culpa vel perspiciatis mollitia, suscipit sed tenetur natus iste, atque quaerat! Est corrupti vel maxime dolores velit maiores a omnis quidem. Aspernatur quis est error doloremque officiis corrupti asperiores quibusdam praesentium reprehenderit reiciendis dignissimos vero, nisi dolore saepe deleniti laborum, quod provident iusto! Sunt officiis magni illum asperiores nulla deleniti eveniet consectetur quae rem assumenda, voluptatum exercitationem, nesciunt porro expedita perferendis unde eos dolor culpa non molestiae ad sapiente facilis dicta reiciendis. Atque magni recusandae ipsa itaque illum, deserunt dolores voluptatum corporis ut rem porro. Iste ipsum possimus quod vitae nemo laudantium saepe? Quibusdam, tempora eos iusto, doloremque asperiores quam delectus accusantium, porro in libero facilis. Mollitia rem, rerum officiis laudantium ab numquam doloribus. Aliquid modi non assumenda tempora harum. Magni eius similique iusto nesciunt ea ratione reiciendis fugit quibusdam labore, laudantium, veritatis unde quas laboriosam vitae! Magnam maiores animi itaque dolorum, laboriosam quia dignissimos sit possimus a aspernatur earum ipsa unde et minus, aperiam mollitia ex pariatur odio, inventore blanditiis natus. Culpa, fugiat! Dolorum ullam est non doloribus accusantium maiores quidem eum excepturi, modi iure sequi nisi praesentium a hic omnis nulla ipsam voluptates. Molestiae aspernatur itaque laborum sunt doloremque hic deleniti obcaecati nulla. Dolores exercitationem eveniet dolorem laborum facere ab, quasi pariatur accusamus culpa sunt doloremque? Aut, animi voluptate aliquid facilis qui nesciunt. Sit amet id, quae ex molestias minima nulla praesentium expedita numquam nesciunt? Provident eos magnam ut eligendi eum reiciendis sit consectetur illum in impedit, quo cupiditate modi fugit, quos omnis obcaecati atque suscipit sequi ipsam autem velit facilis. Amet excepturi consequatur maiores facilis cum, enim veniam consectetur nemo est ullam obcaecati odit veritatis dolorem esse minus asperiores unde dicta dolores expedita fugit. Nulla voluptates, numquam sed hic perspiciatis in atque reiciendis non officia. Ducimus, tempore nostrum officiis nam fugit architecto excepturi vel, quam iure sed aspernatur? Doloribus cumque fuga in ducimus reiciendis voluptatem corporis saepe provident, eum aliquam omnis necessitatibus, molestias facilis ab. Pariatur totam nisi voluptate repudiandae dolores, iste amet harum sequi itaque, quisquam aspernatur culpa reprehenderit obcaecati labore quasi porro repellendus non nobis dicta magni. Illo atque illum fuga voluptatibus quia quos sequi ducimus, dolorem porro iure animi nobis odit cupiditate suscipit soluta a facere. Officiis perferendis officia, repellendus corporis nesciunt sint eos cupiditate quam quasi nihil sed corrupti sequi enim exercitationem maiores saepe totam quibusdam magnam, libero, doloremque modi repellat ab. Hic, porro facere soluta libero perspiciatis a eius magni sapiente vero earum corporis iste sunt cupiditate at non eos. Voluptates temporibus fuga accusamus, quasi quibusdam explicabo nisi assumenda vitae magnam incidunt expedita, cumque aliquid quis sapiente molestiae, dignissimos aut hic ea ducimus voluptatibus consequuntur! Optio similique et earum non mollitia totam alias ducimus quibusdam, repellendus cumque nostrum sed. Fugiat numquam at error, quisquam eum est nam inventore explicabo. Blanditiis quam eius sapiente, incidunt possimus libero vitae nemo in dolorum cum excepturi ea est commodi ullam assumenda doloremque delectus itaque aut facilis dolore corporis eaque pariatur. Illo ratione excepturi, deleniti deserunt maiores ut quam officiis eveniet debitis ad placeat sit nam? Officia a rem sequi magnam saepe laudantium voluptatem suscipit vel ipsum! Aliquam laborum molestiae accusantium consectetur adipisci ea ab! Fugiat eaque labore culpa veniam sequi nam quae dolorum odio nemo, aliquid explicabo alias facilis, reiciendis ullam provident quaerat, porro eum cupiditate? Eveniet rem quae similique mollitia aspernatur praesentium id odit laborum ipsum, fuga voluptas nihil quos, voluptatibus totam. Quia vitae deserunt nam ex nobis soluta dolorum sequi, obcaecati eveniet praesentium eius at necessitatibus ducimus commodi doloremque, facilis quibusdam facere hic ipsam, quos omnis a? Exercitationem voluptatem magni fugiat.
-        </div>
-    
+       <div
+     
+       className=" min-h-full max-w-3xl mx-auto w-full py-10 scrolle--">
+        {
+          messages.length===0?(
+            <StartConversation/>
+          ):(
+           messages.map((message)=>(
+            <div key={message.id} className={`flex ${message.role==="user"?"justify-end":"justify-start"}`}>
+              <div className={`flex space-x-2 max-w-2xl ${message.role==="user"&&"flex-row-reverse space-x-reverse"}`}>
+              <Avatar className="h-9 w-9 shrink-0 flex">
+              {
+                message.role==="user"?(
+                  <>
+                    <AvatarImage src={session.user.name || " "}/>
+                    <AvatarFallback className="bg-primary/70 w-full h-full text-sm ">
+                    <User className="h-4 w-4 text-white"/>
+                    </AvatarFallback>
+                  </>
+                ):(
+                   <AvatarFallback className="bg-primary/70 w-full h-full text-sm ">
+                    <Bot className="h-4 w-4 text-white"/>
+                    </AvatarFallback>
+                )
+              }
+              </Avatar>
+
+              {/* content */}
+              <div className={`px-3 py-2 rounded-2xl my-4 ${message.role==="user"?"bg-primary/70 text-white":""}`}>
+                <div className="text-sm leading-relaxed font-normal">
+                  {
+                    message.parts.map((part,i)=>{
+                      switch (part.type){
+                        case "text":
+                          return message.role ==="assistant"?(
+                            <Streamdown isAnimating={status === "streaming"} key={i} >
+                              {part.text}
+                            </Streamdown>
+                          ):(
+                            <span key={i+Math.floor(Math.random()*2)}>{part.text}</span>
+                          )
+                      }
+                    })
+                  }
+                </div>
+              </div>
+            
+              </div>
+              
+            </div>
+           ))
+          )
+        }
+        <div ref={bottomRef} />
+       </div>
+         
   )
 }
 

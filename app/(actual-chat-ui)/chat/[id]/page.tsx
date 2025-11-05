@@ -6,16 +6,14 @@ import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { Suspense } from "react"
 
-interface PageParams{
-params:Promise<{id:string}>
-}
-const page = async({params}:{params:PageParams}) => {
 
+const page = async ({ params }: { params: Promise<{ id: string }> }) => {
+    const {id}=await params
 
     const session=await auth.api.getSession({
       headers:await headers()
     })
-  
+
     if(!session){
       return redirect("/auth/signin")
     }
@@ -30,7 +28,7 @@ const page = async({params}:{params:PageParams}) => {
       {/* main chat*/}
       <div className="flex-1">
         <Suspense>
-          <LayoutMessageAndForm/>  
+          <LayoutMessageAndForm conversat_id={id} session={session}/>  
         </Suspense>
        
       </div>

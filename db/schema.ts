@@ -66,7 +66,7 @@ export const verification = pgTable("verification", {
 
 // 🗨️ Conversation Table
 export const conversation = pgTable("conversation", {
-  id: uuid("id").defaultRandom().primaryKey(),
+    id: text("id").primaryKey(),
   title: text("title").notNull(),
   userId: text("user_id")
     .notNull()

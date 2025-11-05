@@ -1,17 +1,20 @@
-import { and, desc, eq } from "drizzle-orm"
-import { db } from "../drizzle"
-import { conversation } from "../schema"
+import { db } from "@/db/drizzle"
+import { conversation } from "@/db/schema"
+import { and, asc, desc, eq } from "drizzle-orm"
+import {nanoid} from"nanoid"
+
 
 // createing conversation
 export const createCOnversation=async(user_id:string, title?:string)=>{
-     
+     const con_id=nanoid()
     const [result]=await db.insert(conversation).values({
         title:title || "New converation",
-        userId:user_id
+        userId:user_id,
+        id:con_id
     })
     .returning()
 
-    return result.id
+    return result
 }
 
 
@@ -20,7 +23,7 @@ export const getUserConversations=async(user_id:string)=>{
     return await db.select()
     .from(conversation)
     .where(eq(conversation.userId,user_id))
-    .orderBy(desc(conversation.createdAt))
+    .orderBy(desc(conversation.updatedAt))
 }
 
 //get spacific conversation by id
@@ -47,5 +50,5 @@ export const deleteCOnversation=async({conver_id, user_id}:{conver_id:string, us
 
    if(result.length ===0)return null
 
-   return true
+   return result
 }
