@@ -1,8 +1,6 @@
 import {
   Sidebar,
-  SidebarContent,
   SidebarFooter,
-  SidebarGroup,
   SidebarHeader,
 } from "@/components/ui/sidebar"
 import { BotIcon,  } from "lucide-react"

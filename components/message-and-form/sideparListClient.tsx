@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { SidebarContent, SidebarGroup } from "../ui/sidebar"
 import CreateNewChatButtton from "./createNewChatButtton"
 import { SessionWithUser } from "@/types/session"

@@ -3,9 +3,11 @@ import { loadMessages, saveChat } from "@/lib/chat";
 import { headers } from "next/headers"
 import {convertToModelMessages, createIdGenerator, streamText, UIMessage, validateUIMessages} from "ai"
 import { openai } from "@ai-sdk/openai"
+import { revalidatePath } from "next/cache";
 
 
-
+export const runtime = 'nodejs'; // or 'edge' but test both
+export const maxDuration = 30;
 
 
 export async function POST(req:Request) {
@@ -58,6 +60,10 @@ export async function POST(req:Request) {
             size:16
         }),
         onFinish:async({messages}:{messages:any})=>{
+            if(allMessages.length<3){
+                revalidatePath("/chat")
+            }
+
              try {
                await saveChat({conver_id:conversa_id, messages}) 
              } catch (err) {

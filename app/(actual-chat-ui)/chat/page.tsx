@@ -15,6 +15,7 @@ const page = async() => {
   if(!session){
     return redirect("/auth/signin")
   }
+  
 
   const conversations=await getUserConversations(session.user.id)
   const latestConversation=conversations[0]
