@@ -1,26 +1,26 @@
-// import {UIMessage} from "ai"
+import {UIMessage} from "ai"
 
 import { db } from "@/db/drizzle";
 import { conversation, message } from "@/db/schema";
 import { asc, eq } from "drizzle-orm"
 
-export type UIMessage = {
-  id: string;
-  role: "user" | "assistant";
-  parts: { type: "text" | "image"; text?: string; imageUrl?: string }[];
-};
+// export type UIMessage = {
+//   id: string;
+//   role: "user" | "assistant";
+//   parts: { type: "text" | "image"; text?: string; imageUrl?: string }[];
+// };
 
 
 // save chat
 
 export const saveChat=async({conver_id, messages}:{conver_id:string, messages:UIMessage[]})=>{
-
+     
     // get conversation first
     const conv=await db.select()
     .from(conversation)
     .where(eq(conversation.id, conver_id))
     .limit(1)
-
+  //  console.log("conv: ", conv)
 
     if(conv.length ===0) throw new Error("Conversation not Found")
 
@@ -43,9 +43,9 @@ export const saveChat=async({conver_id, messages}:{conver_id:string, messages:UI
         // transforming to databse data
         const dbMessages=newMessages.map((msg=>{
             const textPart=msg.parts.find(p=>p.type==="text")
-            const imagePart=msg.parts.find(p=>p.type==="image")
+            const imagePart=msg.parts.find(p=>p.type==="tool-generatingImage") as any
             const content=textPart?.text || ""
-            const imageUrl=imagePart?.imageUrl || ""
+            const imageUrl=imagePart?.output?.imageUrl
 
             return{
                 id:msg.id,
@@ -91,7 +91,7 @@ export const saveChat=async({conver_id, messages}:{conver_id:string, messages:UI
 
 
 // load messages
-export async function loadMessages(conversationId: string): Promise<UIMessage[]> {
+export async function loadMessages(conversationId: string) {
   const messages = await db
     .select()
     .from(message)
@@ -107,7 +107,7 @@ export async function loadMessages(conversationId: string): Promise<UIMessage[]>
     }
 
     if (m.imageUrl) {
-      parts.push({ type: "image" as const, imageUrl: m.imageUrl });
+      parts.push({ type: "tool-generatingImage" as const, imageUrl: m.imageUrl }) ;
     }
 
     return {

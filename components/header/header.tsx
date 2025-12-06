@@ -14,7 +14,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ModeToggle } from "../toggle-theme-mode"
 
 
-const Header = () => {
+const Header = ({user}:{user:{id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    email: string;
+    emailVerified: boolean;
+    name: string;
+    image?: string | null | undefined;}}) => {
   return (
     <div className="flex justify-between gap-5 items-center border-b border-border py-2 pr-6">
       <div className="flex items-center  gap-1">
@@ -32,7 +38,7 @@ const Header = () => {
       <DropdownMenu>
   <DropdownMenuTrigger>
     <Avatar>
-  <AvatarImage src="https://github.com/shadcn.png" />
+  <AvatarImage src={user.image as string} />
   <AvatarFallback>CN</AvatarFallback>
 </Avatar>
   </DropdownMenuTrigger>

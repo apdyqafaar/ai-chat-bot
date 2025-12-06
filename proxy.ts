@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
 
 
-const ProtectedRoutes=["/"]
+const ProtectedRoutes=["/chat"]
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
     const {nextUrl}=request
 	const sessionCookie = getSessionCookie(request);
     const res=NextResponse.next()
@@ -20,6 +20,7 @@ export async function middleware(request: NextRequest) {
     if(isAuthRoute && isLogged){
       return NextResponse.redirect(new URL("/", request.url))
     }
+    return res
 }
 
 export const config = {

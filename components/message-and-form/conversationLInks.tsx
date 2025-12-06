@@ -4,16 +4,31 @@ import { headers } from "next/headers";
 import { getUserConversations } from "@/lib/chat";
 import SideparListClient from "./sideparListClient";
 
+interface ConversationInterface{
+  id: string;
+    title: string;
+    userId: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
 const ConversationLInks = async () => {
-  // const {id}=await params
+  
+
   const session = await auth.api.getSession({
     headers: await headers(),
   });
   if (!session) {
     return <span className="text-red-600">Unauthorized</span>;
   }
+   let conversations:ConversationInterface[]=[]
+  const loadConversations=async()=>{
+  conversations=await getUserConversations(session.user.id);
+   
+  }
+   await loadConversations()
 
-  const conversations = await getUserConversations(session.user.id);
+  
   return (
     <SideparListClient conversations={conversations} session={session}/>
   );

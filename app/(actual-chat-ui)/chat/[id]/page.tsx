@@ -21,7 +21,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
     <div className="flex  min-w-full flex-col  min-h-screen relative bg-background">
       {/* header */}
    <div className=" sticky top-0 left-0 right-0 z-10 bg-background">
-       <Header/>
+       <Header user={session?.user}/>
    </div>
 
 

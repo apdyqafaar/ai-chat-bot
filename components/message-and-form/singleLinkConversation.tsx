@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 interface Conversation {
   id: string;
   title: string;
@@ -14,14 +14,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Dot, Loader2, Trash2 } from "lucide-react";
+import {  Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { deleteConversationHelper } from "@/helpers/conversation";
+import {  deleteConversationHelper, getAllConversations, refreshChats } from "@/helpers/conversation";
 import { SessionWithUser } from "@/types/session";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -41,6 +40,7 @@ interface Conversation{
 export const SingleLinkConversation = ({
   conve,
   currentConversation,
+  conversationLists,
   setCurrentConversation,
   setConversationLists,
   session
@@ -48,13 +48,22 @@ export const SingleLinkConversation = ({
   conve: Conversation;
   currentConversation: string;
   session:SessionWithUser,
+  conversationLists:Conversation[]
   setCurrentConversation: React.Dispatch<React.SetStateAction<string>>,
   setConversationLists:React.Dispatch<React.SetStateAction<Conversation[]>>
 }) => {
    const [isOPen, setIsOpen]=useState(false)
    const [ispending, setIspending]=useState(false)
   const router = useRouter();
+  const pathname=usePathname()
+  const id=pathname.split("/").pop() as string
 
+
+  useEffect(()=>{
+    if(!currentConversation){
+ setCurrentConversation(id)
+    }
+  },[])
 
   const handleCLick = () => {
     setCurrentConversation(conve.id);
@@ -70,8 +79,20 @@ export const SingleLinkConversation = ({
        if(res===null){
         return toast.error("Failed to delete conversation",{position:"top-center"})
        }
-
+       const conversations=await getAllConversations(session?.user?.id)
+       setCurrentConversation("")
        setConversationLists((prev)=> prev.filter(c=>c.id !== conve.id))
+       
+        setCurrentConversation(conversations[0].id)
+        router.push(`/chat/${conversations[0].id}`)
+        // refreshChats()
+        
+        if(conversationLists.length===1){
+          setTimeout(()=>{
+             refreshChats()
+          },4000)
+           
+        }
 
      } catch (error) {
       toast.error("Failed to delete conversation",{position:"top-center"})
@@ -85,11 +106,11 @@ export const SingleLinkConversation = ({
  <Button
       onClick={handleCLick}
       variant={"ghost"}
-      className={` my-1 hover:decoration-0 p-2 rounded-2xl text-sm hover:bg-accent  flex justify-between w-full transition-all duration-200 ${
+      className={`  my-1 hover:decoration-0 p-2 rounded-2xl  hover:bg-accent  flex justify-between w-full transition-all duration-200 ${
         currentConversation === conve.id && "bg-accent"
       }`}
     >
-      {conve.title}{" "}
+      <span className=" truncate pr-6 text-xs font-normal">{conve.title}{" "}</span>
    
        
 

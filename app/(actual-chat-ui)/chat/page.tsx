@@ -23,7 +23,7 @@ const page = async() => {
     return redirect(`/chat/${latestConversation.id}`)
   }else{
     const newConversation_id=await createCOnversation(session.user.id)
-     return redirect(`/chat/${newConversation_id}`)
+     return redirect(`/chat/${newConversation_id.id}`)
   }
 
   return (

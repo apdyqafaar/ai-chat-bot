@@ -1,3 +1,4 @@
+"use server"
 import { db } from "@/db/drizzle"
 import { conversation } from "@/db/schema"
 import { and, asc, desc, eq } from "drizzle-orm"
@@ -37,6 +38,12 @@ export const getCOnversationById=async({conver_id, user_id}:{conver_id:string, u
   if(!conve ||conve.userId !== user_id)return null
 
   return conve
+}
+
+export const updateConversation=async(conver_id:string, data:any)=>{
+  const result=await db.update(conversation)
+  .set(data)
+  .where(eq(conversation.id, conver_id))
 }
 
 
