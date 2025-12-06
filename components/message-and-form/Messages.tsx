@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/button";
 import { copyImageUrl, downloadImage } from "@/helpers/uiHelpers";
 import { Copy } from "lucide-react";
 
-
 interface MessagesProps {
   messages: UIMessage[];
   session: SessionWithUser;
@@ -23,8 +22,8 @@ interface MessagesProps {
 
 const Messages = ({ messages, session, status }: MessagesProps) => {
   const bottomRef = useRef<HTMLDivElement | null>(null);
-  const [isLovedMessage, setIsLovedMessage]=useState<string[]>([])
-  const [isCoppied, setIsCoppied]=useState(false)
+  const [isLovedMessage, setIsLovedMessage] = useState<string[]>([]);
+  const [isCoppied, setIsCoppied] = useState(false);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -56,12 +55,9 @@ const Messages = ({ messages, session, status }: MessagesProps) => {
                     </AvatarFallback>
                   </>
                 ) : (
-                 
-                     <AvatarFallback className="bg-primary/70 w-full h-full text-sm ">
+                  <AvatarFallback className="bg-primary/70 w-full h-full text-sm ">
                     <Bot className="h-4 w-4 text-white" />
                   </AvatarFallback>
-                  
-                 
                 )}
               </Avatar>
 
@@ -88,62 +84,75 @@ const Messages = ({ messages, session, status }: MessagesProps) => {
                           </span>
                         );
                       case "tool-generatingImage":
-                          const imagePart=part as any
-                          // console.log("part image", part)
-                          const imageSrc=imagePart.imageUrl  || imagePart?.output?.imageUrl as string
-                          if (!imageSrc || imageSrc.trim() === "") {
-  return (
-    <div
-      key={i}
-      className="my-3 w-[400px] h-[400px] rounded-md bg-muted animate-pulse"
-    />
-  );
-}
-                          if(imagePart){
-                              return (
-                          <div key={i} className="my-3">
-                            <Image
-                              src={imageSrc}
-                              alt="Generated-image"
-                              className="rounded-md max-w-full"
-                              width={400}
-                              height={400}
+                        const imagePart = part as any;
+                        console.log("part image", part);
+                        const imageSrc =
+                          (imagePart.imageUrl )as string ||
+                          (imagePart?.output?.imageUrl )as string;
+                        if (!imageSrc || imageSrc.trim() === "") {
+                          return (
+                            <div
+                              key={i}
+                              className="my-3 w-[400px] h-[400px] rounded-md bg-muted animate-pulse"
                             />
-                            <div className="flex items-center mt-2 space-x-2">
+                          );
+                        }
+                        if (imagePart) {
+                          return (
+                            <div key={i} className="my-3">
+                              <img
+                                src={imageSrc}
+                                alt="Generated-image"
+                                className="rounded-md max-w-full"
+                                width={400}
+                                height={400}
+                              />
+                              <div className="flex items-center mt-2 space-x-2">
                                 <Button
-    variant="outline"
-    size="sm"
-    className=" flex items-center gap-2 border-0 bg-accent"
-    onClick={() => downloadImage(imageSrc)}
-  >
-    <Download className="w-4 h-4" />
-  </Button>
-  <Heart className={`w-4 h-4 ${isLovedMessage.includes(message.id)&&"text-rose-600"}`} onClick={()=> setIsLovedMessage(prve=>[...prve, message.id])}/>
-  <span
-  className={`inline-flex items-center transition-all duration-300 ease-in-out transform ${
-    isCoppied ? "opacity-100 translate-y-0" : "opacity-70"
-  }`}
->
-  {isCoppied ? (
-    <span className="px-1 text-xs">Copied</span>
-  ) : (
-    <Copy
-      className="w-4 h-4 opacity-100 transition-opacity duration-300 ease-in-out"
-      onClick={() => copyImageUrl(imageSrc, setIsCoppied)}
-    />
-  )}
-</span>
+                                  variant="outline"
+                                  size="sm"
+                                  className=" flex items-center gap-2 border-0 bg-accent"
+                                  onClick={() => downloadImage(imageSrc)}
+                                >
+                                  <Download className="w-4 h-4" />
+                                </Button>
+                                <Heart
+                                  className={`w-4 h-4 ${
+                                    isLovedMessage.includes(message.id) &&
+                                    "text-rose-600"
+                                  }`}
+                                  onClick={() =>
+                                    setIsLovedMessage((prve) => [
+                                      ...prve,
+                                      message.id,
+                                    ])
+                                  }
+                                />
+                                <span
+                                  className={`inline-flex items-center transition-all duration-300 ease-in-out transform ${
+                                    isCoppied
+                                      ? "opacity-100 translate-y-0"
+                                      : "opacity-70"
+                                  }`}
+                                >
+                                  {isCoppied ? (
+                                    <span className="px-1 text-xs">Copied</span>
+                                  ) : (
+                                    <Copy
+                                      className="w-4 h-4 opacity-100 transition-opacity duration-300 ease-in-out"
+                                      onClick={() =>
+                                        copyImageUrl(imageSrc, setIsCoppied)
+                                      }
+                                    />
+                                  )}
+                                </span>
+                              </div>
                             </div>
-                          </div>
-                        );
-                          }
-                            
-                          
+                          );
+                        }
+
                       default:
-                        return null
-                        
-                        
-                      
+                        return null;
                     }
                   })}
                 </div>
