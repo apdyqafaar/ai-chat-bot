@@ -8,7 +8,12 @@ images: {
         protocol: "https",
         hostname: "replicate.delivery",
         pathname: "/**",
-      }
+      },
+         {
+        protocol: "https",
+        hostname: "https://ai-chat-bot-xi-two.vercel.app/",   // ← ADD YOUR DEPLOYMENT DOMAIN
+        pathname: "/**",
+      },
     ]
   }
 };

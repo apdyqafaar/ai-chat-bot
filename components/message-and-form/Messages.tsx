@@ -89,7 +89,7 @@ const Messages = ({ messages, session, status }: MessagesProps) => {
                         );
                       case "tool-generatingImage":
                           const imagePart=part as any
-                          console.log("part image", part)
+                          // console.log("part image", part)
                           const imageSrc=imagePart.imageUrl  || imagePart?.output?.imageUrl as string
                           if (!imageSrc || imageSrc.trim() === "") {
   return (
