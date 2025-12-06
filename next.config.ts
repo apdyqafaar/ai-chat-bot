@@ -11,7 +11,7 @@ images: {
       },
          {
         protocol: "https",
-        hostname: "https://ai-chat-bot-xi-two.vercel.app/",   // ← ADD YOUR DEPLOYMENT DOMAIN
+        hostname: "https://ai-chat-bot-xi-two.vercel.app",   // ← ADD YOUR DEPLOYMENT DOMAIN
         pathname: "/**",
       },
     ]
