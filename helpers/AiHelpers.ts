@@ -61,7 +61,7 @@ export const generateImage=async(prompt:string, output_format="jpg"):Promise<Str
 
     const output = await replicate.run("google/gemini-2.5-flash-image", { input });
     const image_url=(output as any).url()
-// console.log("image created at ai helper func", image_url)
+console.log("image created at ai helper func", image_url)
     return image_url.href
   } catch (error) {
     console.log("Error at Generating Image on replicate", error)
