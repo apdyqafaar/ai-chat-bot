@@ -9,7 +9,7 @@ import { generatingImageTool } from "@/tools/aiToolCalling";
 
 
 export const runtime = 'nodejs'; // node runing
-export const maxDuration = 50;
+
 
 
 export async function POST(req:Request) {
